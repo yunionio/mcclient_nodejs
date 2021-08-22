@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+"use strict";
+
+const Shell = require("../mcclient/shell")
+var shell = new Shell()
+try {
+    shell.run()
+}catch(err) {
+    console.error('Error: ' + err)
+}

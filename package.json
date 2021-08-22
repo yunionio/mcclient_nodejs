@@ -1,0 +1,27 @@
+{
+  "name": "mcclient_nodejs",
+  "version": "0.0.1",
+  "description": "Nodejs SDK for Cloudpods API",
+  "homepage": "https://github.com/yunionio/mcclient_nodejs",
+  "bugs": {
+    "url": "https://github.com/yunionio/mcclient_nodejs/issues"
+  },
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "start": "node ./bin/climc"
+  },
+  "dependencies": {
+    "argparse": "^2.0.1",
+    "bluebird": "^3.5.0",
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.3",
+    "debug": "~2.6.3",
+    "jsonwebtoken": "^7.4.1",
+    "morgan": "~1.8.1",
+    "prettytable": "^0.3.1",
+    "serve-favicon": "~2.4.2",
+    "uuid4": "^1.0.0"
+  }
+}
