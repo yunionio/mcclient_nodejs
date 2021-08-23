@@ -119,7 +119,6 @@ class Client {
       headers['Content-Type'] = 'application/json';
       self.request(method, url, headers, body)
         .then(function(data) {
-          console.log(data);
           let result = data.data
           let headers = data.headers
           if (result.constructor.name === 'String') {
@@ -204,7 +203,6 @@ class Client {
     return new Promise(function(resolve, reject) {
       self.jsonRequest('POST', self.auth_url + '/auth/tokens', null, {auth: authinfo})
         .then(function(result) {
-          console.log(result)
           let token_str = result.headers['x-subject-token']
           self.catalog = new CatalogV3(result.data.token.catalog);
           const token = new TokenCredentialV3(result.data.token, token_str);
@@ -297,7 +295,6 @@ class CatalogV3 {
         }
         for (let j = 0; j < this.catalog[i].endpoints.length; j ++) {
           let ep = this.catalog[i].endpoints[j];
-          console.log(ep);
           if (endpoint_type.indexOf(ep.interface) === 0 && (
             region === ep.region_id ||
             region_zone === ep.region_id ||
@@ -579,7 +576,6 @@ class TokenCredentialV2 {
 
 class ClientSession {
   constructor(cli, region, zone, endpoint_type, token, api_version) {
-    console.log(region, zone, endpoint_type, api_version);
     this.client = cli;
     this.region = region;
     this.zone = zone;
@@ -607,8 +603,18 @@ class ClientSession {
     }
   }
 
+  get_default_version(service) {
+    if (service === 'compute') {
+      return 'v2';
+    } else {
+      return 'v1';
+    }
+  }
+
   get_service_name(service, api_version) {
-    console.log(service, api_version);
+    if (!api_version) {
+      api_version = this.get_default_version(service);
+    }
     if (this.is_multi_version_service(service) && api_version && api_version !== 'v1') {
       return service + '_' + api_version;
     }
@@ -648,7 +654,6 @@ class ClientSession {
   }
 
   getServiceEndpoint(service, region, zone, endpoint_type) {
-    console.log(service, region, zone, endpoint_type);
     // first try client catalog, which is up to date
     let catalog = this.client.catalog;
     // find from catalog cached in token
