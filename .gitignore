@@ -27,4 +27,29 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
+package-lock.json
 
+# container run
+.ash_history
+
+# web storm
+.idea/
+
+*.o
+*.a
+*.so
+*.swp
+
+.content
+.assets
+.static
+
+## OS Files
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# OSX
+.DS_Store
