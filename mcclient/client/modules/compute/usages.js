@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const ComputeManager = require("../manager/compute");
+const ComputeManager = require("../../manager/compute");
 
 class UsageManager extends ComputeManager {
 

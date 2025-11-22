@@ -1,4 +1,4 @@
-const ComputeManager = require("../manager/compute");
+const ComputeManager = require("../../manager/compute");
 
 class ServerManager extends ComputeManager {
 }

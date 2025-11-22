@@ -1,6 +1,6 @@
 const querystring = require("querystring");
-const GlanceManager = require("../manager/image");
-const error = require('../../error');
+const GlanceManager = require("../../manager/image");
+const error = require('../../../error');
 
 const _meta_prefix = 'x-image-meta';
 const _meta_property_prefix = 'x-image-meta-property';

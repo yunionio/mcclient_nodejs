@@ -59,7 +59,7 @@ class Shell {
     parser.add_argument('--os-region-name', {default: process.env['OS_REGION_NAME'], help: 'Defaults to env[OS_REGION_NAME]'});
     parser.add_argument('--os-zone-name', {default: process.env['OS_ZONE_NAME'], help: 'Defaults to env[OS_ZONE_NAME]'});
     parser.add_argument('--api-version', {default: process.env['API_VERSION'], help: 'Defaults to env[API_VERSION] or v1'});
-    parser.add_argument('--os-endpoint-type', {default: (process.env['OS_ENDPOINT_TYPE'] ? process.env['OS_ENDPOINT_TYPE']:'publicURL'), choices: ['publicULR', 'internalURL'], help: 'Defaults to env[OS_ENDPOINT_TYPE] or publicURL'});
+    parser.add_argument('--os-endpoint-type', {default: (process.env['OS_ENDPOINT_TYPE'] ? process.env['OS_ENDPOINT_TYPE']:'publicURL'), choices: ['publicULR', 'internalURL', 'apigateway'], help: 'Defaults to env[OS_ENDPOINT_TYPE] or publicURL'});
     return parser;
   }
 
