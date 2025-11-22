@@ -20,9 +20,14 @@ class Client {
   }
 
   initModules() {
-    const fs = require("fs");
     const path = require("path");
     const modules_dir = path.join(__dirname, "modules");
+    this.initModulesInDir(modules_dir);
+  }
+
+  initModulesInDir(modules_dir) {
+    const fs = require("fs");
+    const path = require("path");
     let self = this;
     fs.readdir(modules_dir, function(err, files) {
       if (err) {
@@ -30,11 +35,13 @@ class Client {
       }else {
         for(let i = 0; i < files.length; i ++) {
           if (files[i].endsWith(".js")) {
-            let module_name = files[i].substr(0, files[i].length - 3);
+            let module_name = files[i].slice(0, -3);
             if (self.debug) {
               console.log("init module", module_name);
             }
             self[module_name] = require(path.join(modules_dir, module_name));
+          } else if (fs.statSync(path.join(modules_dir, files[i])).isDirectory()) {
+            self.initModulesInDir(path.join(modules_dir, files[i]));
           }
         }
       }
@@ -85,7 +92,7 @@ class Client {
           if (method === 'HEAD') {
             result = res.headers
           }
-          if (self.debug > 1) {
+          if (self.debug) {
             console.log('request result: ');
             console.log(res.headers);
             console.log(result);
@@ -661,7 +668,45 @@ class ClientSession {
       catalog = this.token.getCatalog();
     }
     // console.log(catalog, region, zone, service, endpoint_type);
-    return catalog.getServiceEndpoint(this.get_service_name(service, this.api_version), region, zone, endpoint_type);
+    if (endpoint_type === 'apigateway') {
+      const ret = this.getApigatewayEndpoint(catalog, service, region, zone);
+      return ret
+    } else {
+      return catalog.getServiceEndpoint(this.get_service_name(service, this.api_version), region, zone, endpoint_type);
+    }
+  }
+
+  getApigatewayEndpoint(catalog, service, region, zone) {
+    let url = catalog.getServiceEndpoint(this.get_service_name(service, this.api_version), region, zone, '');
+
+    let prefix = this.client.auth_url;
+    let lastSlashPos = prefix.lastIndexOf('/api/s/identity');
+    if (lastSlashPos <= 0) {
+        throw new Error('invalue auth_url ' + this.client.authUrl + ', should be url of apigateway endpoint, e.g. https://<apigateway-host>/api/s/identity/v3');
+    }
+    prefix = prefix.substring(0, lastSlashPos)
+    while (prefix.endsWith('/')) {
+      prefix = prefix.substring(0, prefix.length - 1);
+    }
+    prefix = prefix + '/api/s/' + service;
+    if (region && region.length > 0) {
+      prefix = prefix + '/r/' + region;
+      if (zone && zone.length > 0) {
+        prefix = prefix + '/z/' + zone;
+      }
+    }
+    let ret = '';
+    if (url.length < 9) {
+      throw new Error('invalid url ' + url + ': shorter than 9 bytes');
+    }
+    let slashPos = url.indexOf('/', 9);
+     if (slashPos > 0) {
+      url = url.substring(9 + slashPos);
+      ret = prefix + '/' + url;
+    } else {
+      ret = prefix;
+    }
+    return ret;
   }
 
   isSystemAdmin() {

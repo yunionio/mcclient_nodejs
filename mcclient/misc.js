@@ -63,10 +63,10 @@ function printList(data, fields) {
     }
     rows.push(row);
   }
-  const PrettyTable = require('prettytable');
-  let pt = new PrettyTable();
-  pt.create(fields, rows);
-  pt.print();
+  const Table = require('cli-table3');
+  let table = new Table({ head: fields });
+  rows.forEach(row => table.push(row));
+  console.log(table.toString());
   if (title) {
     console.log('****', title, '****');
   }
@@ -174,10 +174,10 @@ function printObject(obj) {
     }
     rows.push([k, v]);
   }
-  const PrettyTable = require('prettytable');
-  let pt = new PrettyTable();
-  pt.create(fields, rows);
-  pt.print();
+  const Table = require('cli-table3');
+  let table = new Table({ head: fields });
+  rows.forEach(row => table.push(row));
+  console.log(table.toString());
 }
 
 function printMultiResult(result, fields) {

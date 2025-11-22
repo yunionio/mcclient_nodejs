@@ -4,10 +4,11 @@ module.exports = [
 {
   cmd: 'user-list',
   args: [
+    ['--limit', {metavar: '<LIMIT>', default: 0, help: 'Max items show, 0 means no limit'}],
   ],
   help: 'List users',
   func: (cli, args) => {
-    cli.module('users').list()
+    cli.module('users').list(args)
     .then((result) => {
       misc.printList(result, cli.module('users').columns());
     });
