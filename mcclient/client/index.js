@@ -162,6 +162,14 @@ class Client {
     }
   }
 
+  set_project(tenant_name, token) {
+    if (this.auth_version() === 'v3') {
+      return this._auth_v3(null, null, null, null, tenant_name, null, token);
+    } else {
+      return this._auth_v2(null, null, null, tenant_name, token);
+    }
+  }
+
   refresh(tenantId, tenantName, domain, token) { 
     if (this.auth_version() === 'v3') {
       return this._auth_v3(null, null, null, tenantId, tenantName, domain, token);
@@ -328,7 +336,7 @@ class CatalogV3 {
           }else if (regeps[region]) {
             selected = regeps[region];
           }else {
-            throw new Error('No valid ' + endpoints_type + ' endpoints for ' + service + ' in region ' + region + '/' + zone);
+            throw new Error('No valid ' + endpoint_type + ' endpoints for ' + service + ' in region ' + region + '/' + zone);
           }
         }
         return selected;
@@ -375,6 +383,14 @@ class TokenCredentialV3 {
 
   getProjectDomainId() {
     return this.info.project.domain.id;
+  }
+
+  getProjects() {
+    return this.info.projects;
+  }
+
+  getProjectNames() {
+    return this.info.projects.map(project => project.name);
   }
 
   getUserId() {
