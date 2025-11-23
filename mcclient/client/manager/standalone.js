@@ -21,7 +21,7 @@ class StandaloneManager extends BaseManager {
   }
 
   getSpecific(idstr, spec, params) {
-    let url = '/' + this.keyword_plural() + '/' + spec;
+    let url = '/' + this.keyword_plural() + '/' + idstr + '/' + spec;
     if (params) {
       url += '?' + querystring.stringify(params);
     }
