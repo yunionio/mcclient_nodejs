@@ -11,7 +11,10 @@ class Client {
 
     this.catalog = null;
     const http = require('https');
-    const keepAliveAgent = new http.Agent({keepAlive: true});
+    const keepAliveAgent = new http.Agent({
+      keepAlive: true,
+      rejectUnauthorized: false  // Disable SSL certificate verification
+    });
     this.agent = keepAliveAgent;
 
     const SessionManager = require("./session");
